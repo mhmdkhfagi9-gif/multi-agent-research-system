@@ -4,12 +4,59 @@ Every agent and tool reads its settings from here instead of hardcoding
 values, so changing the model, paths, or retry limits only needs to happen
 in one place.
 """
+                       ┌─────────────┐
+                       │    USER     │
+                       └──────┬──────┘
+                              │
+                              ▼
+                   ┌──────────────────┐
+                   │   ORCHESTRATOR   │
+                   │      AGENT       │
+                   └────────┬─────────┘
+                            │
+              ┌─────────────┼─────────────┐
+              │             │             │
+              ▼             ▼             ▼
+       ┌────────────┐ ┌────────────┐ ┌────────────┐
+       │ PDF Agent  │ │ API Agent  │ │ Sheet Agent│
+       └─────┬──────┘ └─────┬──────┘ └─────┬──────┘
+             │              │              │
+             └──────────────┼──────────────┘
+                            ▼
+                   ┌─────────────────┐
+                   │  ANALYSIS AGENT │
+                   └────────┬────────┘
+                            │
+                            ▼
+                   ┌─────────────────┐
+                   │  CRITIC AGENT   │
+                   └────────┬────────┘
+                            │
+                       ┌────┴────┐
+                       │         │
+                    ERROR      VALID
+                       │         │
+                       ▼         ▼
+                   Retrieve   Report
+                     Again     Agent
+                                │
+                                ▼
+                       ┌────────────────┐
+                       │  ACTION AGENT  │
+                       └───────┬────────┘
+                               │
+                ┌──────────────┼──────────────┐
+                ▼              ▼              ▼
+             PDF Report     Dashboard      Email
+
+
+
 
 import os
 from langchain_groq import ChatGroq
 
 # --- LLM ---
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "KEY")   # <-- set your real key (env var recommended)
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "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")   # <-- set your real key (env var recommended)
 LLM_MODEL = "llama-3.3-70b-versatile"
 LLM_TEMPERATURE = 0
 
