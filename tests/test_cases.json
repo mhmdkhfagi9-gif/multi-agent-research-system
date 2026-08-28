@@ -1,1 +1,26 @@
-
+[
+  {
+    "id": "test_1",
+    "query": "What are the key findings across our documents and data sources?",
+    "expected_sources_used": ["pdf", "api", "sheet"],
+    "notes": "General cross-source retrieval test."
+  },
+  {
+    "id": "test_2",
+    "query": "Summarize the most important numbers or figures mentioned in the dataset.",
+    "expected_sources_used": ["sheet"],
+    "notes": "Tests spreadsheet-focused retrieval and analysis."
+  },
+  {
+    "id": "test_3",
+    "query": "What does the API data say, and does it match the documents?",
+    "expected_sources_used": ["api", "pdf"],
+    "notes": "Tests cross-source agreement/conflict detection in the Analysis Agent."
+  },
+  {
+    "id": "test_4",
+    "query": "Is there anything in our knowledge base about a topic that isn't covered at all?",
+    "expected_sources_used": [],
+    "notes": "Tests that the Analysis/Critic agents correctly flag insufficient data instead of hallucinating."
+  }
+]
