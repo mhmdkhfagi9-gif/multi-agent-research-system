@@ -1,23 +1,17 @@
-"""
-Analysis Agent: takes the merged context from the Retrieval Agent and uses
-the LLM to analyze and cross-validate information across the different
-sources (PDF, API, Sheet), producing structured JSON findings.
-"""
-
 import json
 import re
-
 import config
-
 
 class AnalysisAgent:
     def __init__(self, llm=None):
         self.llm = llm or config.get_llm()
 
     def run(self, user_query: str, merged_context: str) -> dict:
-        prompt = f"""
-You are a research analysis agent. You are given information retrieved from
-multiple sources (PDF documents, an external API, and spreadsheet data).
+        max_chars = 12000
+        if len(merged_context) > max_chars:
+            merged_context = merged_context[:max_chars] + "\n\n[Content truncated due to length...]"
+
+        prompt = f"""You are a research analysis agent. You are given information retrieved from multiple sources (PDF documents, an external API, and spreadsheet data).
 
 Your job:
 1. Identify the key facts relevant to the user's question.
@@ -39,7 +33,16 @@ Return ONLY a JSON object in this exact format:
   "confidence": "high" or "medium" or "low"
 }}
 """
-        response = self.llm.invoke(prompt).content
+        try:
+            response = self.llm.invoke(prompt).content
+        except Exception as e:
+            return {
+                "key_findings": [f"Error during analysis: {str(e)}"],
+                "cross_source_agreement": "insufficient_data",
+                "notes": f"LLM failed: {str(e)}",
+                "confidence": "low",
+                "raw_output": str(e),
+            }
         return self._extract_json(response)
 
     @staticmethod
