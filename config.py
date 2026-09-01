@@ -4,53 +4,6 @@ Every agent and tool reads its settings from here instead of hardcoding
 values, so changing the model, paths, or retry limits only needs to happen
 in one place.
 """
-                       ┌─────────────┐
-                       │    USER     │
-                       └──────┬──────┘
-                              │
-                              ▼
-                   ┌──────────────────┐
-                   │   ORCHESTRATOR   │
-                   │      AGENT       │
-                   └────────┬─────────┘
-                            │
-              ┌─────────────┼─────────────┐
-              │             │             │
-              ▼             ▼             ▼
-       ┌────────────┐ ┌────────────┐ ┌────────────┐
-       │ PDF Agent  │ │ API Agent  │ │ Sheet Agent│
-       └─────┬──────┘ └─────┬──────┘ └─────┬──────┘
-             │              │              │
-             └──────────────┼──────────────┘
-                            ▼
-                   ┌─────────────────┐
-                   │  ANALYSIS AGENT │
-                   └────────┬────────┘
-                            │
-                            ▼
-                   ┌─────────────────┐
-                   │  CRITIC AGENT   │
-                   └────────┬────────┘
-                            │
-                       ┌────┴────┐
-                       │         │
-                    ERROR      VALID
-                       │         │
-                       ▼         ▼
-                   Retrieve   Report
-                     Again     Agent
-                                │
-                                ▼
-                       ┌────────────────┐
-                       │  ACTION AGENT  │
-                       └───────┬────────┘
-                               │
-                ┌──────────────┼──────────────┐
-                ▼              ▼              ▼
-             PDF Report     Dashboard      Email
-
-
-
 
 import os
 from langchain_groq import ChatGroq
