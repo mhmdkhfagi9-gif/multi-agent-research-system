@@ -8,18 +8,18 @@ in one place.
 import os
 from langchain_groq import ChatGroq
 
-# --- LLM ---
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "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")   # <-- set your real key (env var recommended)
-LLM_MODEL = "llama-3.3-70b-versatile"
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+if not GROQ_API_KEY:
+    raise ValueError("GROQ_API_KEY environment variable is required.")
+
+LLM_MODEL = "openai/gpt-oss-120b" 
 LLM_TEMPERATURE = 0
 
-
 def get_llm():
-    """Single shared LLM factory used by every agent."""
-    os.environ["GROQ_API_KEY"] = GROQ_API_KEY
     return ChatGroq(
         model=LLM_MODEL,
         temperature=LLM_TEMPERATURE,
+        api_key=GROQ_API_KEY,  
         timeout=30,
         max_retries=2,
     )
